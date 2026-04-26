@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    jlink-pack.url = "github:prtzl/jlink-nix";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -10,11 +9,15 @@
     inputs.flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = inputs.nixpkgs.legacyPackages.${system};
+        pkgs = import inputs.nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+
         stdenv = pkgs.stdenv;
-        jlink = inputs.jlink-pack.defaultPackage.${system}.overrideAttrs (attrs: {
-          meta.license = "";
-        });
+        jlink = pkgs.segger-jlink.override {
+          acceptLicense = true;
+        };
 
         shellExports = ''
           string=${(builtins.concatStringsSep "/bin:" firmware.debug.buildInputs) + "/bin"}
