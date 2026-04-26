@@ -28,12 +28,6 @@
           buildir=''${1:-build}
         '';
 
-        meson = pkgs.writeShellScriptBin "meson" ''
-          ${shellExports}
-          cat meson_options.txt
-          meson setup --cross-file=./gcc-arm-none-eabi.meson --cross-file=./stm32f4.meson -Dproject_name="${(firmware.debug).pname}" -Dbuildtype="${(firmware.debug).buildtype}" "$buildir"
-        '';
-
         cmake = pkgs.writeShellScriptBin "cmake" ''
           ${shellExports}
           cmake -B$buildir -DPROJECT_NAME="${(firmware.debug).pname}" -DPROJECT_VERSION="${(firmware.debug).version}" -DCMAKE_BUILD_TYPE="${(firmware.debug).buildtype}"
@@ -119,7 +113,7 @@
       in
       {
         packages = rec {
-          inherit meson cmake;
+          inherit cmake;
           default = debug;
           debug = mkProject firmware.debug mkFlashJlink;
           release = mkProject firmware.release mkFlashJlink;
