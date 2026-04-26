@@ -138,7 +138,6 @@
             jlink
             # pkgs.stlink
             pkgs.dos2unix
-            pkgs.glibc_multi
             pkgs.clang
           ];
         };
