@@ -1,0 +1,20 @@
+# .gitlab-ci.yml
+
+image: nixos/nix:latest
+
+variables:
+  NIX_CONFIG: "experimental-features = nix-command flakes"
+
+# build-debug:
+#   script:
+#     - nix build .#debug
+
+build-release:
+  script:
+    - nix build .#release
+    - mkdir -p artifacts
+    - cp -rL result/ artifacts/
+    - chmod -R 755 artifacts/
+  artifacts:
+    paths:
+    - artifacts/

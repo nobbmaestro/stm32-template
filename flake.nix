@@ -12,6 +12,9 @@
         pkgs = import inputs.nixpkgs {
           inherit system;
           config.allowUnfree = true;
+          config.permittedInsecurePackages = [
+            "segger-jlink-qt4-874"
+          ];
         };
 
         stdenv = pkgs.stdenv;
