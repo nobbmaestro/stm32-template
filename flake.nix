@@ -17,7 +17,6 @@
           ];
         };
 
-        stdenv = pkgs.stdenv;
         jlink = pkgs.segger-jlink.override {
           acceptLicense = true;
         };
@@ -134,7 +133,6 @@
             pkgs.clang-tools
             jlink
             # pkgs.stlink
-            pkgs.dos2unix
             pkgs.clang
           ];
         };
