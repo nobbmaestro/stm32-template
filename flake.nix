@@ -40,13 +40,13 @@
         firmware.debug = mkFirmware { buildtype = "debug"; };
         firmware.release = mkFirmware { buildtype = "release"; };
 
-        mkFlashStlink =
-          fw:
-          pkgs.writeShellApplication {
-            name = "flash-stlink-${fw.buildtype}";
-            text = "st-flash --reset write ${fw}/bin/${fw.binary}.bin 0x08000000";
-            runtimeInputs = [ pkgs.stlink ];
-          };
+        # mkFlashStlink =
+        #   fw:
+        #   pkgs.writeShellApplication {
+        #     name = "flash-stlink-${fw.buildtype}";
+        #     text = "st-flash --reset write ${fw}/bin/${fw.binary}.bin 0x08000000";
+        #     runtimeInputs = [ pkgs.stlink ];
+        #   };
 
         jlink-script =
           fw:
@@ -120,8 +120,8 @@
           default = debug;
           debug = mkProject firmware.debug mkFlashJlink;
           release = mkProject firmware.release mkFlashJlink;
-          debugst = mkProject firmware.debug mkFlashStlink;
-          releasest = mkProject firmware.release mkFlashStlink;
+          # debugst = mkProject firmware.debug mkFlashStlink;
+          # releasest = mkProject firmware.release mkFlashStlink;
           debugger = pkgs.symlinkJoin {
             name = "debug";
             paths = [
@@ -136,7 +136,7 @@
           nativeBuildInputs = (firmware.debug.buildInputs or [ ]) ++ [
             pkgs.clang-tools
             jlink
-            pkgs.stlink
+            # pkgs.stlink
             pkgs.dos2unix
             pkgs.glibc_multi
             pkgs.clang
